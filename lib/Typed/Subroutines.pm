@@ -12,6 +12,8 @@ sub typed_sub(*@types) is export {
 =head1 SYNOPSIS
 
     use Typed::Subroutines;
+
+    # create a subtype from Sub
     subset TwoArgSub         of Sub where typed_sub(Any, Any);
     subset TakesIntAndString of Sub where typed_sub(Int, Str);
 
@@ -23,6 +25,14 @@ sub typed_sub(*@types) is export {
 
     $b = sub (Int $a, Str $b) { ... }; # lives
     $b = sub (Int $a,     $b) { ... }; # dies
+
+    # validate subroutines passed to your subroutines (dawg)
+    sub doStuff(Int $a, Str $b, &operation where typed_sub(Int, Str)}) {
+        ...
+    }
+
+    doStuff(99, "bottles of beer", -> Int $a, Str $b { ... }) # lives
+    doStuff(99, "bottles of beer", -> Rat $a, Num $b { ... }) # dies
 
 =head1 DESCRIPTION
 
