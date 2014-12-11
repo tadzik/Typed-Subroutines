@@ -3,7 +3,7 @@ module Typed::Subroutines;
 sub typed_sub(*@types) is export {
     return sub ($s) {
         $s.signature.params == +@types
-        and @types ~~ $s.signature.params.map(*.type)
+        and @types ~~ $s.signature.params.map(*.type).Array
     }
 }
 
